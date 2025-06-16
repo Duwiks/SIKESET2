@@ -17,7 +17,7 @@
                         <tr>
                             <th scope="col">No.</th>
                             <th scope="col">Nama</th>
-                            <th scope="col">Jurusan</th>
+                            <th scope="col">Prodi</th>
                             <th scope="col">Email</th>
                             <th scope="col">Jenis</th>
                             <th scope="col">Proses</th>
