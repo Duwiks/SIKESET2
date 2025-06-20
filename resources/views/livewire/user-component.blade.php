@@ -12,12 +12,14 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <table class="table">
+                <input type="text" class="form-control w-50" placeholder="Cari User" wire:model.live="cari">
+                <table class=" table">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">No.</th>
                             <th scope="col">Nama</th>
-                            <th scope="col">Prodi</th>
+                            <th scope="col">Jurusan</th>
+                            <th scope="col">Telepon</th>
                             <th scope="col">Email</th>
                             <th scope="col">Jenis</th>
                             <th scope="col">Proses</th>
@@ -29,6 +31,7 @@
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $data->nama }}</td>
                                 <td>{{$data->jurusan}}</td>
+                                <td>{{$data->telepon}}</td>
                                 <td>{{ $data->email }}</td>
                                 <td>{{ $data->jenis }}</td>
                                 <td>
