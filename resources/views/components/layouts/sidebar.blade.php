@@ -11,7 +11,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{route('member')}}">
                         <span data-feather="users"></span>
-                        Kelola Members
+                        Kelola Mahasiswa
                     </a>
                 </li>
                 <li class="nav-item">
