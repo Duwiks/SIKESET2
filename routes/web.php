@@ -7,9 +7,11 @@ use App\Livewire\LoginComponent;
 use App\Livewire\PinjamComponent;
 use App\Livewire\UserComponent;
 use App\Livewire\MemberComponent;
+use App\Livewire\Sikeset;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeComponent::class)->middleware('auth')->name('home');
+Route::get('/', Sikeset::class)->name('sikeset');
+Route::get('/home', HomeComponent::class)->middleware('auth')->name('home');
 Route::get('/user', UserComponent::class)->name('user')->middleware('auth');
 Route::get('/member', MemberComponent::class)->name('member')->middleware('auth');
 Route::get('/kategori', KategoriComponent::class)->name('kategori')->middleware('auth');
