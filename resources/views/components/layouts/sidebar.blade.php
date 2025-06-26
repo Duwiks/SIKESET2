@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#books">
+                    <a class="nav-link text-white" href="{{ route('gedung') }}">
                         <span data-feather="book"></span>
                         Kelola Aset
                     </a>
@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#categories">
+                    <a class="nav-link text-white" href="{{route(name: 'kategori')}}">
                         <span data-feather="tag"></span>
                         Kelola Kategori
                     </a>
