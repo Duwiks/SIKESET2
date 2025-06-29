@@ -14,11 +14,11 @@ class MemberComponent extends Component
     public $nama, $jurusan, $telepon, $email, $password, $cari, $id;
     public function render()
     {
-        if($this->cari != "") {
+        if ($this->cari != "") {
             $data['member'] = User::where('nama', 'like', '%' . $this->cari . '%')
-            ->orWhere('email', 'like', '%' . $this->cari . '%')
-            ->paginate(10);
-        }else{
+                ->orWhere('email', 'like', '%' . $this->cari . '%')
+                ->paginate(10);
+        } else {
             $data['member'] = User::where('jenis', 'mahasiswa')->paginate(10);
         }
         $layout['title'] = 'Kelola Mahasiswa';
@@ -27,15 +27,15 @@ class MemberComponent extends Component
     public function store()
     {
         $this->validate([
-            'nama'=>'required',
-            'jurusan'=>'required',
-            'telepon'=>'required',
-            'email'=>'required'
+            'nama' => 'required',
+            'jurusan' => 'required',
+            'telepon' => 'required',
+            'email' => 'required'
         ], [
-            'nama.required'=>'Nama Lengkap Tidak Boleh Kosong!',
-            'jurusan.required'=>'Jurusan Tidak Boleh Kosong!',
-            'telepon.required'=>'Nomor Telepon Tidak Boleh Kosong!',
-            'email.required'=>'Email Tidak Boleh Kosong!'
+            'nama.required' => 'Nama Lengkap Tidak Boleh Kosong!',
+            'jurusan.required' => 'Jurusan Tidak Boleh Kosong!',
+            'telepon.required' => 'Nomor Telepon Tidak Boleh Kosong!',
+            'email.required' => 'Email Tidak Boleh Kosong!'
         ]);
         User::create([
             'nama' => $this->nama,
@@ -71,7 +71,7 @@ class MemberComponent extends Component
     }
     public function confirm($id)
     {
-        $this->id=$id;
+        $this->id = $id;
     }
     public function destroy()
     {

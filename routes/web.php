@@ -4,9 +4,12 @@ use App\Livewire\GedungComponent;
 use App\Livewire\HomeComponent;
 use App\Livewire\KategoriComponent;
 use App\Livewire\LoginComponent;
+use App\Livewire\LoginMahasiswa;
 use App\Livewire\PinjamComponent;
 use App\Livewire\UserComponent;
 use App\Livewire\MemberComponent;
+use App\Livewire\Profile;
+use App\Livewire\RegisterMahasiswa;
 use App\Livewire\Sikeset;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +21,11 @@ Route::get('/kategori', KategoriComponent::class)->name('kategori')->middleware(
 Route::get('/gedung', GedungComponent::class)->name('gedung')->middleware('auth');
 Route::get('/pinjam', PinjamComponent::class)->name('pinjam')->middleware('auth');
 
-
 Route::get('/login', LoginComponent::class)->name('login');
+Route::get('/login-mahasiswa', LoginMahasiswa::class)->name('login-mahasiswa');
+Route::get('/register-mahasiswa', RegisterMahasiswa::class)->name('register-mahasiswa');
+Route::get('/profile', Profile::class)->name('profile')->middleware('auth');
+
 Route::get('/logout', function () {
     auth()->logout();
     return redirect()->route('login');

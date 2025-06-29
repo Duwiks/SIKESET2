@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dream Homes</title>
+    <title>SIKESET</title>
 
     <!-- ✅ Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,6 +12,9 @@
     <script src="https://kit.fontawesome.com/a2c51f5b7a.js" crossorigin="anonymous"></script>
     <!-- Alpine.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 
     <!-- Optional Tailwind config -->
     <script>
@@ -32,12 +35,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f5f5f5;
+            /* background-color: #f5f5f5; */
         }
     </style>
 </head>
 
-<body class="h-[1000vh]">
+<body>
     {{ $slot }}
 </body>
 
