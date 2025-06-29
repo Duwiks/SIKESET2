@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#returns">
+                    <a class="nav-link text-white" href="{{ route('kembali') }}">
                         <span data-feather="check-circle"></span>
                         Kelola Pengembalian
                     </a>
