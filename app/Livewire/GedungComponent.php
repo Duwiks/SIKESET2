@@ -18,7 +18,7 @@ class GedungComponent extends Component
     public function render()
     {
         if ($this->cari != '') {
-            $data['gedung'] = Gedung::where('judul', 'like', '%' . $this->cari . '%')->paginate(10);
+            $data['gedung'] = Gedung::where('nama', 'like', '%' . $this->cari . '%')->paginate(10);
         } else {
             $data['gedung'] = Gedung::paginate(10);
         }

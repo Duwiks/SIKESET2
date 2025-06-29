@@ -14,8 +14,8 @@ return new class extends Migration {
     {
         Schema::create('pinjams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(User::class);
-            $table->foreignId(Gedung::class);
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('gedung_id')->constrained('gedungs');
             $table->date('tanggal_pinjam')->nullable();
             $table->date('tanggal_kembali')->nullable();
             $table->enum('status', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
     }
+
 
     /**
      * Reverse the migrations.
