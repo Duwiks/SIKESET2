@@ -1,47 +1,58 @@
-<div>
-    <div class="card">
-        <div class="card-header">
-            Kelola Kategori
+<div class="container-fluid py-4">
+    <div class="card border-0 shadow rounded-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-semibold">Kelola Kategori</h4>
+            <button href="#" class="btn btn-primary mb-2" data-toggle="modal" data-target="#addPage">
+                + Tambah Kategori
+            </button>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <a href="#" class="btn btn-primary float-right mb-2" data-toggle="modal" data-target="#addPage">Tambah
-                    Kategori</a>
-                @if(session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                <input type="text" class="form-control w-50" placeholder="Cari User" wire:model.live="cari">
-                <table class=" table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Nama</th>
-                            <th scope="col">Deskripsi</th>
-                            <th scope="col">Proses</th>
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <input type="text" class="form-control w-100 rounded-pill px-4" placeholder="Cari Kategori..."
+                    wire:model.live="cari">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-nowrap">
+                    <thead class="bg-light text-secondary">
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama</th>
+                            <th>Deskripsi</th>
+                            <th class="text-end">Proses</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($kategori as $data)
-                            <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
-                                <td>{{$data->nama }}</td>
-                                <td>{{$data->deskripsi}}</td>
-                                <td>
-                                    <a href="#" wire:click="edit({{ $data->id }})" class="btn btn-sm btn-info"
-                                        data-toggle="modal" data-target="#editPage">Ubah</a>
-                                    <a href="#" wire:click="confirm({{ $data->id }})" class="btn btn-sm btn-danger"
-                                        data-toggle="modal" data-target="#deletePage">Hapus</a>
+                            <tr class="bg-white">
+                                <td>{{ $loop->iteration }}</td>
+                                <td class="fw-medium">{{ $data->nama }}</td>
+                                <td>{{ $data->deskripsi }}</td>
+                                <td class="text-end">
+                                    <a href="#" wire:click="edit({{ $data->id }})"
+                                        class="btn btn-sm btn-outline-primary rounded-pill me-2 px-3" data-toggle="modal"
+                                        data-target="#editPage">Ubah</a>
+                                    <a href="#" wire:click="confirm({{ $data->id }})"
+                                        class="btn btn-sm btn-outline-danger rounded-pill px-3" data-toggle="modal"
+                                        data-target="#deletePage">Hapus</a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{ $kategori->links() }}
+                <div class="mt-3">
+                    {{ $kategori->links() }}
+                </div>
             </div>
         </div>
+
 
         <!-- Modal Tambah -->
         <div wire:ignore.self class="modal fade" id="addPage" tabindex="-1" aria-labelledby="exampleModalLabel"
