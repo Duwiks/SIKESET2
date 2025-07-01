@@ -8,8 +8,8 @@
                         <span data-feather="users" class="mr-2"></span> Members
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Total: 120</h5>
-                        <p class="card-text">Active Members</p>
+                        <h5 class="card-title">Total: {{ $member }}</h5>
+                        <p class="card-text">Mahasiswa Peminjam</p>
                     </div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                         <span data-feather="book" class="mr-2"></span> Aset
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Total: 450</h5>
+                        <h5 class="card-title">Total: {{ $gedungs }}</h5>
                         <p class="card-text">Available Aset</p>
                     </div>
                 </div>
@@ -30,8 +30,8 @@
                         <span data-feather="file-text" class="mr-2"></span> Peminjaman
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Active: 85</h5>
-                        <p class="card-text">Aset on Loan</p>
+                        <h5 class="card-title">Peminjaman: {{ $pinjam }}</h5>
+                        <p class="card-text">Peminjaman</p>
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                         <span data-feather="clock" class="mr-2"></span> Returns
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Overdue: 5</h5>
-                        <p class="card-text">Overdue Aset</p>
+                        <h5 class="card-title">Pengembalian: {{ $kembali }}</h5>
+                        <p class="card-text">Pengembalian</p>
                     </div>
                 </div>
             </div>
