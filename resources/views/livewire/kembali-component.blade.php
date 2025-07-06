@@ -8,6 +8,7 @@
 
     <!-- Kelola Pengembalian -->
     <div class="container-fluid py-4">
+
         <!-- Kelola Pengembalian -->
         <div class="card border-0 shadow rounded-4 mb-4">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -129,8 +130,12 @@
                             <div class="col-7">: {{ date('Y-m-d') }}</div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-5 font-weight-bold">Denda</div>
-                            <div class="col-7">: {{ $status ? 'Ya' : 'Tidak' }}</div>
+                            <div class="col-5 font-weight-bold">Status Denda</div>
+                            <div class="col-7">
+                                : <span class="{{ $status ? 'text-danger' : 'text-success' }}">
+                                    {{ $status ? 'Telat, Ada Denda' : 'Tepat Waktu, Tidak Ada Denda' }}
+                                </span>
+                            </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-5 font-weight-bold">Lama Terlambat</div>
@@ -138,7 +143,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-5 font-weight-bold">Jumlah Denda</div>
-                            <div class="col-7">: Rp {{ number_format($lama * 1000, 0, ',', '.') }}</div>
+                            <div class="col-7">: Rp {{ number_format($denda, 0, ',', '.') }}</div>
                         </div>
                     </div>
 
@@ -149,4 +154,6 @@
                 </div>
             </div>
         </div>
+
     </div>
+</div>

@@ -14,7 +14,7 @@ class KembaliComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
     protected $paginationTheme = 'bootstrap';
-    public $id, $nama, $user, $tanggal_kembali, $lama, $status;
+    public $id, $nama, $user, $tanggal_kembali, $lama, $status, $denda;
     public function render()
     {
         $layout['title'] = 'Pengembalian Gedung';
@@ -22,39 +22,44 @@ class KembaliComponent extends Component
         $data['pengembalian'] = Pengembalian::paginate(10);
         return view('livewire.kembali-component', $data)->layoutData($layout);
     }
-    public function pilih($id)
-    {
-        $pinjam = Pinjam::find($id);
-        $this->nama = $pinjam->gedung->nama;
-        $this->user = $pinjam->user->nama;
-        $this->tanggal_kembali = $pinjam->tanggal_kembali;
-        $this->id = $pinjam->id;
+   public function pilih($id)
+   {
+    $pinjam = Pinjam::find($id);
+    $this->nama = $pinjam->gedung->nama;
+    $this->user = $pinjam->user->nama;
+    $this->tanggal_kembali = $pinjam->tanggal_kembali;
+    $this->id = $pinjam->id;
 
-        $kembali = new DateTime($this->tanggal_kembali);
-        $today = new DateTime();
-        $selisih = $today->diff($kembali);
-        //$this->status = $selisih->invert;
-        if ($selisih->invert == 1) {
-            $this->status = true;
+    $kembali = new DateTime($this->tanggal_kembali);
+    $today = new DateTime();
+    $selisih = $today->diff($kembali);
 
-        } else {
-            $this->status = false;
-        }
-        $this->lama = $selisih->d;
-
+    if ($selisih->invert == 1) {
+        $this->status = true;
+        $this->lama = $selisih->days;
+    } else {
+        $this->status = false;
+        $this->lama = 0;
     }
+
+   
+    $this->denda = $this->lama * 1000;
+    }
+
+
     public function store()
     {
         if ($this->status == true) {
             $denda = $this->lama * 1000;
         } else {
 
-            $denda = 0;
+            $denda = $this->denda ?? 0;
         }
         $pinjam = Pinjam::find($this->id);
         Pengembalian::create([
             'pinjam_id' => $this->id,
             'tanggal_kembali' => date('Y-m-d'),
+            'denda' => $this->denda
 
         ]);
         $pinjam->update([
