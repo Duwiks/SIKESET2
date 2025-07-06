@@ -12,7 +12,7 @@ class Gedung extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'gedungs';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'kategori_id', 'nama'];
+    protected $fillable = ['id', 'kategori_id', 'nama', 'gambar'];
 
     public function kategori(): BelongsTo
     {

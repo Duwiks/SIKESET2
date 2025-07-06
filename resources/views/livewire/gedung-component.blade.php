@@ -24,6 +24,7 @@
                     <thead class="bg-light">
                         <tr class="text-secondary">
                             <th>No.</th>
+                            <th>Gambar</th>
                             <th>Nama</th>
                             <th>Kategori</th>
                             <th class="text-end">Proses</th>
@@ -33,6 +34,13 @@
                         @foreach($gedung as $data)
                             <tr class="bg-white">
                                 <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    @if ($data->gambar)
+                                        <img src="{{ asset('storage/' . $data->gambar) }}" width="80">
+                                    @else
+                                        <span class="text-muted">Tidak ada</span>
+                                    @endif
+                                </td>
                                 <td class="fw-medium">{{ $data->nama }}</td>
                                 <td>{{ $data->Kategori->nama }}</td>
                                 <td class="text-end">
@@ -87,6 +95,18 @@
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label>Gambar</label>
+                            <input type="file" wire:model="gambar" class="form-control">
+                            @error('gambar')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        
+                            {{-- Preview Gambar --}}
+                            @if ($gambar)
+                                <img src="{{ $gambar->temporaryUrl() }}" class="img-thumbnail mt-2" width="100">
+                            @endif
+                        </div>                        
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -131,8 +151,21 @@
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                    </form>
-                </div>
+                        <div class="form-group">
+                            <label>Gambar</label>
+                            <input type="file" wire:model="gambar" class="form-control">
+                            @error('gambar')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        
+                            {{-- ✅ Tampilkan gambar preview baru jika sedang upload --}}
+                            @if ($gambar)
+                                <img src="{{ $gambar->temporaryUrl() }}" class="img-thumbnail mt-2" width="100">
+                            @elseif ($old_gambar)
+                                {{-- ✅ Tampilkan gambar lama jika belum upload baru --}}
+                                <img src="{{ asset('storage/' . $old_gambar) }}" class="img-thumbnail mt-2" width="100">
+                            @endif
+                        </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" wire:click="update" class="btn btn-primary">Save
