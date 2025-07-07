@@ -40,7 +40,13 @@
                                 <td>{{ $data->user->nama }}</td>
                                 <td>{{ $data->tanggal_pinjam }}</td>
                                 <td>{{ $data->tanggal_kembali }}</td>
-                                <td>{{ $data->status }}</td>
+                                <td> <span class="badge 
+                                    @if($data->status == 'menunggu') bg-secondary
+                                    @elseif($data->status == 'disetujui') bg-success
+                                    @elseif($data->status == 'ditolak') bg-danger
+                                    @endif">
+                                        {{ ucfirst($data->status) }}
+                                    </span></td>
                                 <td class="text-end">
                                     <a href="#" wire:click="edit({{ $data->id }})"
                                         class="btn btn-sm btn-outline-primary rounded-pill me-2 px-3" data-toggle="modal"
@@ -48,7 +54,15 @@
                                     <a href="#" wire:click="confirm({{ $data->id }})"
                                         class="btn btn-sm btn-outline-danger rounded-pill px-3" data-toggle="modal"
                                         data-target="#deletePage">Hapus</a>
+
+                                    @if($data->status === 'menunggu')
+                                        <button wire:click="acc({{ $data->id }})"
+                                            class="btn btn-sm btn-success rounded-pill me-2 px-3">ACC</button>
+                                        <button wire:click="tolak({{ $data->id }})"
+                                            class="btn btn-sm btn-warning rounded-pill me-2 px-3">Tolak</button>
+                                    @endif
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>

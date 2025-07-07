@@ -79,6 +79,26 @@ class PinjamComponent extends Component
     {
         $this->id = $id;
     }
+
+    public function acc($id)
+    {
+        $pinjam = Pinjam::findOrFail($id);
+        $pinjam->status = 'disetujui';
+        $pinjam->save();
+
+        session()->flash('success', 'Peminjaman disetujui.');
+    }
+
+    public function tolak($id)
+    {
+        $pinjam = Pinjam::findOrFail($id);
+        $pinjam->status = 'ditolak';
+        $pinjam->save();
+
+        session()->flash('success', 'Peminjaman ditolak.');
+    }
+
+
     public function destroy()
     {
         $pinjam = Pinjam::find($this->id);

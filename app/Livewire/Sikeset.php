@@ -5,11 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Gedung;
 use App\Models\Pinjam;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class Sikeset extends Component
 {
     public $gedungs;
+    public $users;
 
     public $gedung_id;
     public $tanggal_pinjam;
@@ -21,6 +23,7 @@ class Sikeset extends Component
     public function mount()
     {
         $this->gedungs = Gedung::with('kategori')->latest()->get();
+        $this->users = User::count(); // jumlah semua user
     }
 
     public function render()

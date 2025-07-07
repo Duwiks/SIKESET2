@@ -56,9 +56,14 @@
                 <div class="flex items-center gap-3 flex-grow">
                     <i class="fas fa-home text-sm text-gray-500"></i>
                     <div>
-                        <div class="text-xs text-gray-500">Gedung</div>
-                        <strong class="text-sm font-semibold">12 Gedung</strong>
+                        <div class="text-xs text-gray-500">Aset</div>
+                        @if($gedungs->count() > 0)
+                            <strong class="text-sm font-semibold">{{ $gedungs->count() }} Aset</strong>
+                        @else
+                            <strong class="text-sm font-semibold text-gray-400 italic">Data kosong</strong>
+                        @endif
                     </div>
+
                 </div>
 
                 <!-- Divider -->
@@ -69,7 +74,7 @@
                     <i class="fas fa-eye text-sm text-gray-500"></i>
                     <div>
                         <div class="text-xs text-gray-500">Mahasiswa</div>
-                        <strong class="text-sm font-semibold">Mahasiswa</strong>
+                        <strong class="text-sm font-semibold">{{ $users }}</strong>
                     </div>
                 </div>
 
@@ -110,74 +115,75 @@
     <!-- Section Daftar Gedung -->
     <section class="px-4 py-12 max-w-screen-xl mx-auto">
         <h2 class="text-3xl font-bold text-center font-montserrat mb-10">Daftar Gedung</h2>
-    
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($gedungs->take(3) as $gedung)
-            <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
-                <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
-                    alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
-    
-                <div class="p-4 flex flex-col flex-grow">
-                    <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
-                    <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
-    
-                    @if($gedung->kategori)
-                        <p class="text-sm text-gray-500 italic mb-2">
-                            {{ $gedung->kategori->deskripsi }}
-                        </p>
-                    @endif
-    
-                    <div class="mt-auto">
-                        <button wire:click="bukaModal({{ $gedung->id }})"
-                            class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
-                            Pinjam
-                        </button>
+                <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
+                    <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
+                        alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
+
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
+                        <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
+
+                        @if($gedung->kategori)
+                            <p class="text-sm text-gray-500 italic mb-2">
+                                {{ $gedung->kategori->deskripsi }}
+                            </p>
+                        @endif
+
+                        <div class="mt-auto">
+                            <button wire:click="bukaModal({{ $gedung->id }})"
+                                class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
+                                Pinjam
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            @endforeach        
+            @endforeach
         </div>
     </section>
-    
+
     @if($showModal)
-    <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-xl w-full max-w-md p-6 relative">
-        <h2 class="text-xl font-bold mb-4">Form Peminjaman Gedung</h2>
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-xl w-full max-w-md p-6 relative">
+                <h2 class="text-xl font-bold mb-4">Form Peminjaman Gedung</h2>
 
-        <form>
-            <div class="mb-4">
-                <label class="block text-sm mb-1">Nama Peminjam</label>
-                <input type="text" class="w-full border px-3 py-2 rounded" value="{{ Auth::user()->nama }}" disabled>
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">Nama Peminjam</label>
+                        <input type="text" class="w-full border px-3 py-2 rounded" value="{{ Auth::user()->nama }}"
+                            disabled>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">Tanggal Pinjam</label>
+                        <input type="date" class="w-full border px-3 py-2 rounded" wire:model.defer="tanggal_pinjam">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">Tanggal Selesai</label>
+                        <input type="date" class="w-full border px-3 py-2 rounded" wire:model.defer="tanggal_kembali">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">Keterangan</label>
+                        <textarea class="w-full border px-3 py-2 rounded" wire:model.defer="keterangan" rows="3"
+                            placeholder="Keperluan..."></textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-2 mt-4">
+                        <button type="button" wire:click="tutupModal"
+                            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                        <button type="button" wire:click="pinjam"
+                            class="px-4 py-2 bg-black text-white rounded hover:bg-gray-900">Kirim</button>
+                    </div>
+                </form>
+
+                <button wire:click="tutupModal"
+                    class="absolute top-3 right-4 text-gray-500 text-xl hover:text-black">&times;</button>
             </div>
-
-            <div class="mb-4">
-                <label class="block text-sm mb-1">Tanggal Pinjam</label>
-                <input type="date" class="w-full border px-3 py-2 rounded" wire:model.defer="tanggal_pinjam">
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-sm mb-1">Tanggal Selesai</label>
-                <input type="date" class="w-full border px-3 py-2 rounded" wire:model.defer="tanggal_kembali">
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-sm mb-1">Keterangan</label>
-                <textarea class="w-full border px-3 py-2 rounded" wire:model.defer="keterangan"
-                    rows="3" placeholder="Keperluan..."></textarea>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" wire:click="tutupModal"
-                    class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                <button type="button" wire:click="pinjam"
-                    class="px-4 py-2 bg-black text-white rounded hover:bg-gray-900">Kirim</button>
-            </div>
-        </form>
-
-        <button wire:click="tutupModal"
-            class="absolute top-3 right-4 text-gray-500 text-xl hover:text-black">&times;</button>
-    </div>
-</div>
-@endif
+        </div>
+    @endif
 
 </div>
