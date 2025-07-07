@@ -109,28 +109,35 @@
     <!-- Section Daftar Gedung -->
     <section class="px-4 py-12 max-w-screen-xl mx-auto">
         <h2 class="text-3xl font-bold text-center font-montserrat mb-10">Daftar Gedung</h2>
-
+    
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($gedungs->take(3) as $gedung)
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
                 <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
                     alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
-                <div class="p-4">
+    
+                <div class="p-4 flex flex-col flex-grow">
                     <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
                     <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
-                    <p class="text-sm text-gray-500 mb-4">
-                        {{ $gedung->deskripsi ?? 'Gedung tersedia untuk kegiatan kampus.' }}
-                    </p>
-                    <button wire:click="bukaModal({{ $gedung->id }})"
-                        class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
-                        Pinjam
-                    </button>                                  
+    
+                    @if($gedung->kategori)
+                        <p class="text-sm text-gray-500 italic mb-2">
+                            {{ $gedung->kategori->deskripsi }}
+                        </p>
+                    @endif
+    
+                    <div class="mt-auto">
+                        <button wire:click="bukaModal({{ $gedung->id }})"
+                            class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
+                            Pinjam
+                        </button>
+                    </div>
                 </div>
             </div>
-        @endforeach        
+            @endforeach        
         </div>
     </section>
-
+    
     @if($showModal)
     <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
     <div class="bg-white rounded-xl w-full max-w-md p-6 relative">

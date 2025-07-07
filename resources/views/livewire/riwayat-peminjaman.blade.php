@@ -50,7 +50,7 @@
     <!-- Main Content -->
     <div class="flex-1 p-8">
         <!-- Profile Section -->
-        <div id="profileContent" class="active-section">
+        <div id="profileContent" class="hidden">
             <h1 class="text-3xl font-bold text-indigo-800 mb-6">Profil Pengguna</h1>
             <div class="bg-white rounded-lg shadow p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -101,7 +101,7 @@
         </div>
 
         <!-- Loan Section -->
-        <div id="loanContent" class="hidden">
+        <div id="loanContent" class="active-section">
         <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-indigo-800">Daftar Peminjaman</h1>
         </div>

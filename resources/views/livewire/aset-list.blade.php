@@ -18,25 +18,32 @@
     <!-- Daftar Aset -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($gedungs as $gedung)
-        <div class="bg-white rounded-xl shadow-md overflow-hidden" wire:key="gedung-{{ $gedung->id }}">    
+            <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full" wire:key="gedung-{{ $gedung->id }}">
                 <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
                     alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
-                <div class="p-4">
+                
+                <div class="p-4 flex flex-col flex-grow">
                     <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
                     <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
-                    <p class="text-sm text-gray-500 mb-4">
-                        {{ $gedung->deskripsi ?? 'Gedung tersedia untuk kegiatan kampus.' }}
-                    </p>
-                    <button wire:click="bukaModal({{ $gedung->id }})"
-                        class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
-                        Pinjam
-                    </button>
+    
+                    @if($gedung->kategori)
+                        <p class="text-sm text-gray-500 italic mb-2">
+                            {{ $gedung->kategori->deskripsi }}
+                        </p>
+                    @endif
+    
+                    <div class="mt-auto">
+                        <button wire:click="bukaModal({{ $gedung->id }})"
+                            class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
+                            Pinjam
+                        </button>
+                    </div>
                 </div>
             </div>
         @empty
             <p class="text-center text-gray-500 col-span-3">Tidak ada aset ditemukan.</p>
         @endforelse
-    </div>
+    </div>    
 
     <!-- Pagination -->
     <div class="mt-8">

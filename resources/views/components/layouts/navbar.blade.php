@@ -3,7 +3,7 @@
         <a href="{{ route('sikeset') }}" class="font-montserrat font-bold text-lg">SIKESET</a>
 
         <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
-            <li><a href="#" class="text-gray-700 hover:text-black">Home</a></li>
+            <li><a href="{{ route('sikeset') }}" class="text-gray-700 hover:text-black">Home</a></li>
             <li><a href="#about" class="text-gray-700 hover:text-black">About Us</a></li>
             <li><a href="{{ route('aset-list') }}" class="text-gray-700 hover:text-black">Daftar Aset</a></li>
             <li><a href="#" class="text-gray-700 hover:text-black">Properties</a></li>
@@ -32,9 +32,9 @@
                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition rounded-t-xl">
                             Profile
                         </a>
-                        <a href="{{ route('profile') }}"
-                           class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition">
-                            Peminjam
+                        <a href="{{ route('riwayat-peminjaman') }}"
+                            class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition">
+                            Riwayat Peminjaman
                         </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
