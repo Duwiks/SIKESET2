@@ -12,6 +12,7 @@ use App\Livewire\Profile;
 use App\Livewire\RegisterMahasiswa;
 use App\Livewire\KembaliComponent;
 use App\Livewire\Sikeset;
+use App\Livewire\AsetList;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Sikeset::class)->name('sikeset');
@@ -27,8 +28,14 @@ Route::get('/login', LoginComponent::class)->name('login');
 Route::get('/login-mahasiswa', LoginMahasiswa::class)->name('login-mahasiswa');
 Route::get('/register-mahasiswa', RegisterMahasiswa::class)->name('register-mahasiswa');
 Route::get('/profile', Profile::class)->name('profile')->middleware('auth');
+Route::get('/aset-list', AsetList::class)->name('aset-list');
 
 Route::get('/logout', function () {
     auth()->logout();
     return redirect()->route('login');
+})->name('logout');
+
+Route::post('/logout', function () {
+    auth()->logout();
+    return redirect()->route('login-mahasiswa');
 })->name('logout');

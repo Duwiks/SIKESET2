@@ -1,58 +1,7 @@
 <div>
+    @include("components.layouts.navbar")
     <section id="home" style="background-color: #f5f5f5;">
         <div class="px-1 py-8 max-w-screen-xl mx-auto">
-            <nav class="flex items-center justify-between">
-                <a href="#" class="font-montserrat font-bold text-[18px]">SIKESET</a>
-                <ul class="flex items-center gap-8 text-[14px] font-normal">
-                    <li><a href="#home" class="hover:text-black">Home</a></li>
-                    <li><a href="#" class="hover:text-black">About Us</a></li>
-                    <li><a href="#" class="hover:text-black">Properties</a></li>
-                    <li><a href="#" class="hover:text-black">Blogs</a></li>
-                    <li>
-                        @auth
-                            <div x-data="{ open: false }" class="relative flex items-center gap-3">
-                                <button @click="open = !open" class="flex items-center gap-2 focus:outline-none">
-                                    <img src="{{ asset('assets/user.jpg') }}" alt="Foto Profil"
-                                        class="w-8 h-8 rounded-full object-cover border-2 border-gray-300 transition ring-2 ring-transparent hover:ring-indigo-400" />
-                                    <span class="font-semibold">{{ Auth::user()->nama }}</span>
-                                    <svg class="w-4 h-4 ml-1 transition-transform duration-200"
-                                        :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </button>
-                                <!-- Dropdown -->
-                                <div x-show="open" x-transition:enter="transition ease-out duration-150"
-                                    x-transition:enter-start="opacity-0 scale-95"
-                                    x-transition:enter-end="opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-100"
-                                    x-transition:leave-start="opacity-100 scale-100"
-                                    x-transition:leave-end="opacity-0 scale-95" @click.away="open = false"
-                                    class="absolute right-0 mt-36 w-44 bg-white rounded-xl shadow-lg py-2 z-50 border border-gray-200 origin-top-right"
-                                    style="min-width: 160px;">
-                                    <a href="{{ route('profile') }}"
-                                        class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition rounded-t-xl">Profile</a>
-                                    <a href="{{ route('profile') }}"
-                                        class="block px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition">Peminjam</a>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit"
-                                            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition rounded-b-xl">
-                                            Logout
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        @else
-                            <a href="{{ route('login-mahasiswa') }}"
-                                class="bg-black text-white rounded-[30px] px-6 py-2 text-[14px] font-medium hover:bg-gray-900 transition">
-                                Login
-                            </a>
-                        @endauth
-                    </li>
-                </ul>
-            </nav>
-
             <div class="flex flex-col lg:flex-row items-center lg:items-stretch mt-16 gap-10">
                 <!-- KIRI: TEKS -->
                 <div class="lg:w-1/2 flex justify-center items-center">
@@ -120,7 +69,7 @@
                     <i class="fas fa-eye text-sm text-gray-500"></i>
                     <div>
                         <div class="text-xs text-gray-500">Mahasiswa</div>
-                        <strong class="text-sm font-semibold">6,000 - 12,000 Mahasiswa</strong>
+                        <strong class="text-sm font-semibold">Mahasiswa</strong>
                     </div>
                 </div>
 
