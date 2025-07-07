@@ -11,7 +11,7 @@
             <ul>
                 <li class="mb-2">
                     <button onclick="showSection('profile')"
-                        class="profile-nav w-full flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                        class="w-full flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -22,7 +22,7 @@
                 </li>
                 <li class="mb-2">
                     <button onclick="showSection('loan')"
-                        class="loan-nav w-full flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                        class="w-full flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,7 +36,7 @@
 
         <div class="mt-auto p-4">
             <button onclick="showSection('logout')"
-                class="logout-nav w-full flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                class="w-full flex items-center p-3 rounded-lg hover:bg-indigo-700 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -48,9 +48,9 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-8">
+    <div class="flex-1 p-8 space-y-10">
         <!-- Profile Section -->
-        <div id="profileContent" class="active-section">
+        <div id="profileContent" class="">
             <h1 class="text-3xl font-bold text-indigo-800 mb-6">Profil Pengguna</h1>
             <div class="bg-white rounded-lg shadow p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -102,58 +102,78 @@
 
         <!-- Loan Section -->
         <div id="loanContent" class="hidden">
-        <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-indigo-800">Daftar Peminjaman</h1>
+            <h1 class="text-3xl font-bold text-indigo-800 mb-6">Daftar Peminjaman</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($peminjamans as $pinjam)
+                <div class="loan-card bg-white rounded-lg shadow overflow-hidden transition-all duration-300">
+                    <div class="bg-indigo-100 p-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-indigo-800">ID: P{{ str_pad($pinjam->id, 6, '0', STR_PAD_LEFT) }}</span>
+                            <span class="px-2 py-1 text-xs rounded-full 
+                                {{ $pinjam->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : ($pinjam->status == 'selesai' ? 'bg-gray-100 text-gray-800' : 'bg-green-100 text-green-800') }}">
+                                {{ ucfirst($pinjam->status) }}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold mt-2">{{ $pinjam->gedung->nama ?? '-' }}</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">Tanggal Pinjam</span>
+                            <span class="font-medium">{{ \Carbon\Carbon::parse($pinjam->tanggal_pinjam)->translatedFormat('d F Y') }}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">Tanggal Kembali</span>
+                            <span class="font-medium">{{ \Carbon\Carbon::parse($pinjam->tanggal_kembali)->translatedFormat('d F Y') }}</span>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <span class="text-gray-600">Status</span>
+                            <span class="font-medium capitalize text-gray-800">{{ $pinjam->status }}</span>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 flex justify-end space-x-2">
+                        <button class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200">
+                            Detail
+                        </button>
+                        @if($pinjam->status == 'pending')
+                            <form wire:submit.prevent="batalkan({{ $pinjam->id }})">
+                                <button type="submit" class="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200">
+                                    Batalkan
+                                </button>
+                            </form>
+                        @elseif($pinjam->status == 'selesai')
+                            <button wire:click="pinjamLagi({{ $pinjam->gedung_id }})" class="px-3 py-1 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200">
+                                Pinjam Lagi
+                            </button>
+                        @endif
+                    </div>
+                </div>
+                @empty
+                    <p class="text-gray-500 col-span-full">Belum ada peminjaman.</p>
+                @endforelse
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @forelse($peminjamans as $pinjam)
-            <div class="loan-card bg-white rounded-lg shadow overflow-hidden transition-all duration-300">
-                <div class="bg-indigo-100 p-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-medium text-indigo-800">ID: P{{ str_pad($pinjam->id, 6, '0', STR_PAD_LEFT) }}</span>
-                        <span class="px-2 py-1 text-xs rounded-full 
-                            {{ $pinjam->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : ($pinjam->status == 'selesai' ? 'bg-gray-100 text-gray-800' : 'bg-green-100 text-green-800') }}">
-                            {{ ucfirst($pinjam->status) }}
-                        </span>
-                    </div>
-                    <h3 class="text-xl font-bold mt-2">{{ $pinjam->gedung->nama ?? '-' }}</h3>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between py-2 border-b border-gray-100">
-                        <span class="text-gray-600">Tanggal Pinjam</span>
-                        <span class="font-medium">{{ \Carbon\Carbon::parse($pinjam->tanggal_pinjam)->translatedFormat('d F Y') }}</span>
-                    </div>
-                    <div class="flex justify-between py-2 border-b border-gray-100">
-                        <span class="text-gray-600">Tanggal Kembali</span>
-                        <span class="font-medium">{{ \Carbon\Carbon::parse($pinjam->tanggal_kembali)->translatedFormat('d F Y') }}</span>
-                    </div>
-                    <div class="flex justify-between py-2">
-                        <span class="text-gray-600">Status</span>
-                        <span class="font-medium capitalize text-gray-800">{{ $pinjam->status }}</span>
-                    </div>
-                </div>
-                <div class="px-4 py-3 bg-gray-50 flex justify-end space-x-2">
-                    <button class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200">
-                        Detail
-                    </button>
-                    @if($pinjam->status == 'pending')
-                        <form wire:submit.prevent="batalkan({{ $pinjam->id }})">
-                            <button type="submit" class="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200">
-                                Batalkan
-                            </button>
-                        </form>
-                    @elseif($pinjam->status == 'selesai')
-                        <button wire:click="pinjamLagi({{ $pinjam->gedung_id }})" class="px-3 py-1 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200">
-                            Pinjam Lagi
-                        </button>
-                    @endif
-                </div>
-            </div>
-        @empty
-            <p class="text-gray-500 col-span-full">Belum ada peminjaman.</p>
-        @endforelse
+        <!-- Optional Logout Section -->
+        <div id="logoutContent" class="hidden">
+            <p class="text-xl text-gray-600">Silakan logout melalui tombol atau halaman lainnya.</p>
+        </div>
     </div>
 </div>
 
+<!-- JavaScript untuk fungsi switch konten -->
+<script>
+    function showSection(section) {
+        const sections = ['profileContent', 'loanContent', 'logoutContent'];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+        const target = document.getElementById(section + 'Content');
+        if (target) target.classList.remove('hidden');
+    }
 
+    // Saat pertama kali load, tampilkan profil atau sesuaikan
+    document.addEventListener('DOMContentLoaded', function () {
+        showSection('profile');
+    });
+</script>

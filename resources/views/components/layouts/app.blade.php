@@ -83,30 +83,6 @@
             document.querySelector('.sidebar').classList.toggle('open');
         });
     </script>
-    <script>
-        function showSection(section) {
-            const sections = ['profileContent', 'loanContent', 'logoutContent'];
-            sections.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('d-none');
-            });
-    
-            const selected = document.getElementById(section + 'Content');
-            if (selected) selected.classList.remove('d-none');
-    
-            // Tambahan opsional: sorot tombol aktif
-            const buttons = document.querySelectorAll('.profile-nav, .loan-nav, .logout-nav');
-            buttons.forEach(btn => btn.classList.remove('bg-indigo-700'));
-            const active = document.querySelector(`.${section}-nav`);
-            if (active) active.classList.add('bg-indigo-700');
-        }
-    
-        // Jika kamu ingin halaman langsung buka "Peminjaman" saat pertama kali load:
-        document.addEventListener("DOMContentLoaded", function () {
-            showSection("loan");
-        });
-    </script>
-    
 </body>
 
 </html>

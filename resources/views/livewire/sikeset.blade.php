@@ -92,9 +92,10 @@
                     <h2>Test</h2>
                 </div>
                 <div class="description">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, cumque. Quisquam, voluptatum
-                        doloremque. Quasi, cumque. Doloribus, cumque. Quisquam, voluptatum doloremque. Quasi, cumque.
-                        Doloribus, cumque. Quisquam, voluptatum doloremque.</p>
+                    <p> SIKESET (Sistem Kelola Aset) adalah sistem web untuk mengelola aset sekolah atau instansi,
+                        seperti gedung, ruang, dan alat praktik. Fitur unggulannya memungkinkan pengguna meminjam
+                        aset
+                        secara online dengan mudah.</p>
                 </div>
                 <div class="service">
                     <ul class="list-service">
