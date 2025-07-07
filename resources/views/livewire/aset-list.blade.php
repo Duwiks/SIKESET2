@@ -18,7 +18,7 @@
     <!-- Daftar Aset -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($gedungs as $gedung)
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden" wire:key="gedung-{{ $gedung->id }}">    
                 <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
                     alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
                 <div class="p-4">

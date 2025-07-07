@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Gedung;
 use App\Models\Kategori;
-use App\Models\Peminjaman;
+use App\Models\Pinjam;
 use Illuminate\Support\Facades\Auth;
 
 class AsetList extends Component
@@ -28,47 +28,51 @@ class AsetList extends Component
     public function bukaModal($id)
     {
         $this->gedung_id = $id;
+        $this->tanggal_pinjam = now()->toDateString();
+        $this->tanggal_kembali = now()->addDays(7)->toDateString();
         $this->showModal = true;
     }
 
     public function tutupModal()
     {
-        $this->reset(['showModal', 'gedung_id', 'tanggal_pinjam', 'tanggal_kembali', 'keterangan']);
+        $this->showModal = false;
     }
 
     public function pinjam()
     {
         $this->validate([
+            'gedung_id' => 'required|exists:gedungs,id',
             'tanggal_pinjam' => 'required|date',
             'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255'
         ]);
 
-        Peminjaman::create([
+        Pinjam::create([
             'user_id' => Auth::id(),
             'gedung_id' => $this->gedung_id,
             'tanggal_pinjam' => $this->tanggal_pinjam,
             'tanggal_kembali' => $this->tanggal_kembali,
-            'keterangan' => $this->keterangan,
+            'keterangan' => $this->keterangan ?? '',
+            'status' => 'menunggu'
         ]);
 
-        session()->flash('message', 'Peminjaman berhasil diajukan.');
-        $this->tutupModal();
+        $this->reset(['gedung_id', 'tanggal_pinjam', 'tanggal_kembali', 'keterangan', 'showModal']);
+        session()->flash('success', 'Permintaan peminjaman berhasil diajukan.');
     }
-
+    
     public function render()
     {
-    $kategoris = Kategori::all();
+        $kategoris = Kategori::all() ?? collect(); // fallback agar tidak null
 
-    $gedungs = Gedung::with('kategori')
-        ->when($this->kategori_id, function ($query) {
-            $query->where('kategori_id', $this->kategori_id);
-        })
-        ->latest()
-        ->paginate(9);
-
-    return view('livewire.aset-list', compact('gedungs', 'kategoris'))
-        ->layout('components.layouts.blank');
+        $gedungs = Gedung::with('kategori')
+            ->when($this->kategori_id, function ($query) {
+                $query->where('kategori_id', $this->kategori_id);
+            })
+            ->latest()
+            ->paginate(9);
+    
+        return view('livewire.aset-list', compact('gedungs', 'kategoris'))
+            ->layout('components.layouts.blank');
     }
 
     public function filterKategori()

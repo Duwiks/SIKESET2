@@ -3,7 +3,7 @@
         <a href="{{ route('sikeset') }}" class="font-montserrat font-bold text-lg">SIKESET</a>
 
         <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
-            <li><a href="#home" class="text-gray-700 hover:text-black">Home</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-black">Home</a></li>
             <li><a href="#about" class="text-gray-700 hover:text-black">About Us</a></li>
             <li><a href="{{ route('aset-list') }}" class="text-gray-700 hover:text-black">Daftar Aset</a></li>
             <li><a href="#" class="text-gray-700 hover:text-black">Properties</a></li>
