@@ -9,65 +9,103 @@ use Livewire\WithPagination;
 use App\Models\Pinjam;
 use App\Models\Pengembalian;
 
-
 class KembaliComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
     protected $paginationTheme = 'bootstrap';
-    public $id, $nama, $user, $tanggal_kembali, $lama, $status, $denda;
+
+    public $id;
+    public $nama;
+    public $user;
+    public $tanggal_kembali;
+    public $lama;
+    public $status;
+    public $denda;
+    public $cari = '';
+
     public function render()
     {
-        $layout['title'] = 'Pengembalian Gedung';
-        $data['pinjam'] = Pinjam::where('status', 'menunggu')->paginate(10);
-        $data['pengembalian'] = Pengembalian::paginate(10);
+        $data['pinjam'] = Pinjam::with(['gedung', 'user'])
+            ->where('status', 'disetujui')
+            ->whereHas('user', function ($query) {
+                $query->where('nama', 'like', '%' . $this->cari . '%');
+            })
+            ->paginate(10);
+
+        $data['pengembalian'] = Pengembalian::latest()->paginate(10);
+
+        $layout['title'] = 'Pengembalian Aset';
+
         return view('livewire.kembali-component', $data)->layoutData($layout);
     }
-   public function pilih($id)
-   {
-    $pinjam = Pinjam::find($id);
-    $this->nama = $pinjam->gedung->nama;
-    $this->user = $pinjam->user->nama;
-    $this->tanggal_kembali = $pinjam->tanggal_kembali;
-    $this->id = $pinjam->id;
 
-    $kembali = new DateTime($this->tanggal_kembali);
-    $today = new DateTime();
-    $selisih = $today->diff($kembali);
+    public function pilih($id)
+    {
+        $pinjam = Pinjam::with(['gedung', 'user'])->findOrFail($id);
 
-    if ($selisih->invert == 1) {
-        $this->status = true;
-        $this->lama = $selisih->days;
-    } else {
-        $this->status = false;
-        $this->lama = 0;
+        $this->id = $pinjam->id;
+        $this->nama = $pinjam->gedung->nama ?? '-';
+        $this->user = $pinjam->user->nama ?? '-';
+        $this->tanggal_kembali = $pinjam->tanggal_kembali;
+
+        $kembali = new DateTime($this->tanggal_kembali);
+        $today = new DateTime();
+        $selisih = $today->diff($kembali);
+
+        $this->status = $selisih->invert === 1; // true jika terlambat
+        $this->lama = $this->status ? $selisih->days : 0;
+        $this->denda = $this->lama * 1000;
     }
-
-   
-    $this->denda = $this->lama * 1000;
-    }
-
 
     public function store()
     {
-        if ($this->status == true) {
-            $denda = $this->lama * 1000;
-        } else {
+        $denda = $this->status ? $this->lama * 1000 : 0;
 
-            $denda = $this->denda ?? 0;
-        }
-        $pinjam = Pinjam::find($this->id);
         Pengembalian::create([
             'pinjam_id' => $this->id,
-            'tanggal_kembali' => date('Y-m-d'),
-            'denda' => $this->denda
+            'tanggal_kembali' => now()->format('Y-m-d'),
+            'denda' => $denda,
+        ]);
 
-        ]);
-        $pinjam->update([
-            'status' => 'disetujui'
-        ]);
-        $this->reset();
-        session()->flash('success', 'Berhasil Proses Data!');
+        $pinjam = Pinjam::find($this->id);
+        if ($pinjam) {
+            $pinjam->status = 'selesai'; // ✅ ubah status ke selesai
+            $pinjam->save();
+        }
+
+        $this->resetInput();
+        session()->flash('success', 'Berhasil memproses pengembalian.');
         return redirect()->route('kembali');
     }
 
+    public function tandaiKembali($id)
+    {
+        $pinjam = Pinjam::find($id);
+        if ($pinjam) {
+            $pinjam->status = 'selesai'; // ✅ pastikan enum di database support 'selesai'
+            $pinjam->save();
+
+            // Simpan ke histori jika belum ada
+            Pengembalian::firstOrCreate(
+                ['pinjam_id' => $pinjam->id],
+                [
+                    'tanggal_kembali' => now()->format('Y-m-d'),
+                    'denda' => 0,
+                ]
+            );
+
+            session()->flash('success', 'Aset berhasil ditandai sebagai dikembalikan.');
+        }
+    }
+
+    private function resetInput()
+    {
+        $this->id = null;
+        $this->nama = null;
+        $this->user = null;
+        $this->tanggal_kembali = null;
+        $this->lama = 0;
+        $this->status = null;
+        $this->denda = 0;
+    }
 }

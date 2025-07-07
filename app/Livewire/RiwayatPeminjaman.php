@@ -25,7 +25,6 @@ class RiwayatPeminjaman extends Component
     {
         $peminjamans = Pinjam::with('gedung')
             ->where('user_id', Auth::id())
-            ->whereIn('status', ['disetujui', 'selesai']) // hanya tampilkan yang di-ACC atau selesai
             ->latest()
             ->paginate(5);
 
