@@ -19,6 +19,7 @@ class Sikeset extends Component
     public $keterangan;
 
     public $showModal = false;
+    public $showSuccessModal = false; // ✅ modal sukses
 
     public function mount()
     {
@@ -44,6 +45,11 @@ class Sikeset extends Component
         $this->showModal = false;
     }
 
+    public function closeSuccessModal()
+    {
+        $this->showSuccessModal = false;
+    }
+
     public function pinjam()
     {
         $this->validate([
@@ -62,7 +68,10 @@ class Sikeset extends Component
             'status' => 'menunggu'
         ]);
 
+        // ✅ Reset input dan modal
         $this->reset(['gedung_id', 'tanggal_pinjam', 'tanggal_kembali', 'keterangan', 'showModal']);
-        session()->flash('success', 'Permintaan peminjaman berhasil diajukan.');
+
+        // ✅ Tampilkan modal sukses
+        $this->showSuccessModal = true;
     }
 }

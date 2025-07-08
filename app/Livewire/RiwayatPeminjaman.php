@@ -17,13 +17,13 @@ class RiwayatPeminjaman extends Component
     public function mount()
     {
         $user = Auth::user();
-        $this->name = $user->nama;   // gunakan 'nama', bukan 'name' karena field di database adalah 'nama'
+        $this->name = $user->nama;
         $this->email = $user->email;
     }
 
     public function render()
     {
-        $peminjamans = Pinjam::with('gedung')
+        $peminjamans = Pinjam::with(['gedung', 'pengembalian']) // include pengembalian
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(5);

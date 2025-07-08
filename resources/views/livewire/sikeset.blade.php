@@ -73,7 +73,7 @@
                 <div class="flex items-center gap-3 flex-grow">
                     <i class="fas fa-eye text-sm text-gray-500"></i>
                     <div>
-                        <div class="text-xs text-gray-500">Mahasiswa</div>
+                        <div class="text-xs text-gray-500">Data User</div>
                         <strong class="text-sm font-semibold">{{ $users }}</strong>
                     </div>
                 </div>
@@ -88,29 +88,63 @@
         </div>
     </section>
 
-    <section id="about" class="px-1 py-8 max-w-screen-xl mx-auto mt-7">
-        <h1 class=" text-center font-montserrat font-bold block text-[30px]">About</h1>
-        <div class="flex items-center justify-between mb-8">
-            <img src="{{ asset("assets/logo.png") }}" alt="">
-            <div class="content-about">
-                <div class="title">
-                    <h2>Test</h2>
-                </div>
-                <div class="description">
-                    <p> SIKESET (Sistem Kelola Aset) adalah sistem web untuk mengelola aset sekolah atau instansi,
-                        seperti gedung, ruang, dan alat praktik. Fitur unggulannya memungkinkan pengguna meminjam
-                        aset
-                        secara online dengan mudah.</p>
-                </div>
-                <div class="service">
-                    <ul class="list-service">
-                        <li><i class="fa-solid fa-check"></i> Service 1</li>
-                        <li><i class="fa-solid fa-check"></i> Service 2</li>
-                        <li><i class="fa-solid fa-check"></i> Service 3</li>
-                    </ul>
+    <section id="about" class="py-12 px-4 max-w-screen-xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-12">
+
+            <!-- Konten Teks -->
+            <div class="md:w-1/2 space-y-6">
+                <p class="text-sm text-blue-500 font-semibold border-l-4 border-blue-400 pl-3">About Us</p>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">
+                    SIKESET - Sistem Informasi Kelola Aset Sekolah<br>
+                    Memudahkan pengelolaan dan peminjaman aset secara efisien
+                </h2>
+
+                <!-- Nilai/Keunggulan -->
+                <div class="space-y-5 mt-6">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
+                            <i class="fa-solid fa-laptop-code text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg">Digitalisasi</h4>
+                            <p class="text-gray-600 text-sm">Mengelola aset secara digital untuk efisiensi dan
+                                transparansi.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="bg-pink-100 text-pink-600 p-3 rounded-full">
+                            <i class="fa-solid fa-handshake text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg">Kolaboratif</h4>
+                            <p class="text-gray-600 text-sm">Mendorong keterlibatan semua pihak dalam penggunaan aset.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
+                            <i class="fa-solid fa-bolt text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg">Cepat & Mudah</h4>
+                            <p class="text-gray-600 text-sm">Proses peminjaman yang cepat, online, dan user-friendly.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Gambar -->
+            <div class="md:w-1/2">
+                <img src="{{ asset('assets/logo.png') }}" alt="Tentang SIKESET"
+                    class="rounded-lg shadow-lg w-full object-cover max-h-[400px]">
+            </div>
+        </div>
     </section>
+
+
 
     <!-- Section Daftar Gedung -->
     <section class="px-4 py-12 max-w-screen-xl mx-auto">
@@ -182,6 +216,23 @@
 
                 <button wire:click="tutupModal"
                     class="absolute top-3 right-4 text-gray-500 text-xl hover:text-black">&times;</button>
+            </div>
+        </div>
+    @endif
+
+    @if ($showSuccessModal)
+        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-md text-center max-w-md w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-green-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <h3 class="text-lg font-semibold">Peminjaman Berhasil!</h3>
+                <p class="text-gray-600 mb-4">Data peminjaman berhasil dikirim.</p>
+                <button wire:click="closeSuccessModal"
+                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                    Tutup
+                </button>
             </div>
         </div>
     @endif

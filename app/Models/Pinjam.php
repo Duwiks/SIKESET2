@@ -33,4 +33,9 @@ class Pinjam extends Model
         return $this->belongsTo(Gedung::class);
     }
 
+    public function pengembalian()
+    {
+        return $this->hasOne(\App\Models\Pengembalian::class, 'pinjam_id');
+    }
+
 }

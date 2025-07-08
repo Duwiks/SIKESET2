@@ -42,7 +42,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 12l2-2m0 0l7-7 7 7m-9 2v6m4-6v6m-6 0h6a2 2 0 002-2V10.586a1 1 0 00-.293-.707l-7-7a1 1 0 00-1.414 0l-7 7a1 1 0 00-.293.707V18a2 2 0 002 2h6" />
                 </svg>
-
                 Kembali Ke Beranda
             </a>
             <form method="POST" action="{{ route('logout') }}">
@@ -62,9 +61,8 @@
 
     <!-- Main Content -->
     <div class="flex-1 p-8 space-y-10">
-
         <!-- Loan Section -->
-        <div id="loanContent" class="">
+        <div id="loanContent">
             <h1 class="text-3xl font-bold text-indigo-800 mb-6">Daftar Peminjaman</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($peminjamans as $pinjam)
@@ -74,8 +72,7 @@
                                 <span class="text-sm font-medium text-indigo-800">ID:
                                     P{{ str_pad($pinjam->id, 6, '0', STR_PAD_LEFT) }}</span>
                                 <span
-                                    class="px-2 py-1 text-xs rounded-full 
-                                                    {{ $pinjam->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : ($pinjam->status == 'selesai' ? 'bg-gray-100 text-gray-800' : 'bg-green-100 text-green-800') }}">
+                                    class="px-2 py-1 text-xs rounded-full {{ $pinjam->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : ($pinjam->status == 'selesai' ? 'bg-gray-100 text-gray-800' : 'bg-green-100 text-green-800') }}">
                                     {{ ucfirst($pinjam->status) }}
                                 </span>
                             </div>
@@ -92,27 +89,13 @@
                                 <span
                                     class="font-medium">{{ \Carbon\Carbon::parse($pinjam->tanggal_kembali)->translatedFormat('d F Y') }}</span>
                             </div>
-                            <div class="flex justify-between py-2">
-                                <span class="text-gray-600">Status</span>
-                                <span class="font-medium capitalize text-gray-800">{{ $pinjam->status }}</span>
-                            </div>
-                        </div>
-                        <div class="px-4 py-3 bg-gray-50 flex justify-end space-x-2">
-                            <button class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200">
-                                Detail
-                            </button>
-                            @if($pinjam->status == 'pending')
-                                <form wire:submit.prevent="batalkan({{ $pinjam->id }})">
-                                    <button type="submit"
-                                        class="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200">
-                                        Batalkan
-                                    </button>
-                                </form>
-                            @elseif($pinjam->status == 'selesai')
-                                <button wire:click="pinjamLagi({{ $pinjam->gedung_id }})"
-                                    class="px-3 py-1 text-sm bg-green-100 text-green-800 rounded hover:bg-green-200">
-                                    Pinjam Lagi
-                                </button>
+                            @if($pinjam->status == 'selesai' && optional($pinjam->pengembalian)->denda > 0)
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-600">Denda</span>
+                                    <span class="font-medium text-red-600">
+                                        Rp {{ number_format($pinjam->pengembalian->denda, 0, ',', '.') }}
+                                    </span>
+                                </div>
                             @endif
                         </div>
                     </div>

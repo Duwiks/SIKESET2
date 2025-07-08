@@ -40,7 +40,7 @@
     </style>
 </head>
 
-<body>
+<body class="scroll-smooth">
 
     {{ $slot }}
 
@@ -48,4 +48,5 @@
     @livewireScripts
 
 </body>
+
 </html>

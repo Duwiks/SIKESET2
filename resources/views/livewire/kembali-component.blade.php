@@ -82,7 +82,7 @@
                             @forelse($pengembalian as $data)
                                 <tr class="bg-white">
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $data->pinjam_id }}</td>
+                                    <td>{{ $data->pinjam->user->nama ?? '-' }}</td>
                                     <td>{{ $data->tanggal_kembali }}</td>
                                     <td>Rp {{ number_format($data->denda, 0, ',', '.') }}</td>
                                 </tr>

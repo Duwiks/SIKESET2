@@ -15,6 +15,8 @@ class AsetList extends Component
 
     public $kategori_id = '';
     public $showModal = false;
+    public $showSuccessModal = false; // ✅ Tambah modal sukses
+
     public $gedung_id;
     public $tanggal_pinjam;
     public $tanggal_kembali;
@@ -38,6 +40,11 @@ class AsetList extends Component
         $this->showModal = false;
     }
 
+    public function closeSuccessModal()
+    {
+        $this->showSuccessModal = false;
+    }
+
     public function pinjam()
     {
         $this->validate([
@@ -57,12 +64,12 @@ class AsetList extends Component
         ]);
 
         $this->reset(['gedung_id', 'tanggal_pinjam', 'tanggal_kembali', 'keterangan', 'showModal']);
-        session()->flash('success', 'Permintaan peminjaman berhasil diajukan.');
+        $this->showSuccessModal = true; // ✅ Tampilkan modal sukses
     }
-    
+
     public function render()
     {
-        $kategoris = Kategori::all() ?? collect(); // fallback agar tidak null
+        $kategoris = Kategori::all() ?? collect();
 
         $gedungs = Gedung::with('kategori')
             ->when($this->kategori_id, function ($query) {
@@ -70,15 +77,13 @@ class AsetList extends Component
             })
             ->latest()
             ->paginate(9);
-    
+
         return view('livewire.aset-list', compact('gedungs', 'kategoris'))
             ->layout('components.layouts.blank');
     }
 
     public function filterKategori()
     {
-        // kosong saja, cukup untuk trigger render ulang
+        // Kosong, hanya trigger render
     }
-
-
 }
