@@ -23,22 +23,29 @@
                     wire:key="gedung-{{ $gedung->id }}">
                     <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
                         alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
-
+        
                     <div class="p-4 flex flex-col flex-grow">
                         <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
                         <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
-
+        
                         @if($gedung->kategori)
                             <p class="text-sm text-gray-500 italic mb-2">
                                 {{ $gedung->kategori->deskripsi }}
                             </p>
                         @endif
-
+        
                         <div class="mt-auto">
-                            <button wire:click="bukaModal({{ $gedung->id }})"
-                                class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
-                                Pinjam
-                            </button>
+                            @auth
+                                <button wire:click="bukaModal({{ $gedung->id }})"
+                                    class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
+                                    Pinjam
+                                </button>
+                            @else
+                                <a href="{{ route('login-mahasiswa') }}"
+                                    class="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm hover:bg-indigo-700 transition w-full text-center block">
+                                    Login untuk Pinjam
+                                </a>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -46,6 +53,7 @@
                 <p class="text-center text-gray-500 col-span-3">Tidak ada aset ditemukan.</p>
             @endforelse
         </div>
+        
 
         <!-- Pagination -->
         <div class="mt-8">

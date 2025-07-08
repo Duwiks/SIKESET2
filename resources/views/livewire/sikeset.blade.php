@@ -138,7 +138,7 @@
 
             <!-- Gambar -->
             <div class="md:w-1/2">
-                <img src="{{ asset('assets/logo.png') }}" alt="Tentang SIKESET"
+                <img src="{{ asset('assets/sikeset.png') }}" alt="Tentang SIKESET"
                     class="rounded-lg shadow-lg w-full object-cover max-h-[400px]">
             </div>
         </div>
@@ -152,29 +152,38 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($gedungs->take(3) as $gedung)
-                <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
-                    <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
-                        alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
+    <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
+        <img src="{{ $gedung->gambar ? asset('storage/' . $gedung->gambar) : asset('assets/default.jpg') }}"
+            alt="{{ $gedung->nama }}" class="w-full h-48 object-cover">
 
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
-                        <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
+        <div class="p-4 flex flex-col flex-grow">
+            <h3 class="text-xl font-semibold mb-1">{{ $gedung->nama }}</h3>
+            <p class="text-sm text-gray-600 mb-1">Kategori: {{ $gedung->kategori->nama ?? '-' }}</p>
 
-                        @if($gedung->kategori)
-                            <p class="text-sm text-gray-500 italic mb-2">
-                                {{ $gedung->kategori->deskripsi }}
-                            </p>
-                        @endif
+            @if($gedung->kategori)
+                <p class="text-sm text-gray-500 italic mb-2">
+                    {{ $gedung->kategori->deskripsi }}
+                </p>
+            @endif
 
-                        <div class="mt-auto">
-                            <button wire:click="bukaModal({{ $gedung->id }})"
-                                class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
-                                Pinjam
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+            {{-- Tambahkan di sini --}}
+            <div class="mt-auto">
+                @auth
+                    <button wire:click="bukaModal({{ $gedung->id }})"
+                        class="bg-black text-white px-4 py-2 rounded-full text-sm hover:bg-gray-900 transition w-full">
+                        Pinjam
+                    </button>
+                @else
+                    <a href="{{ route('login-mahasiswa') }}"
+                        class="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm hover:bg-indigo-700 transition w-full text-center block">
+                        Login untuk Pinjam
+                    </a>
+                @endauth
+            </div>
+        </div>
+    </div>
+@endforeach
+
         </div>
     </section>
 
